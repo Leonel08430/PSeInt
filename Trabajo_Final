@@ -1,0 +1,109 @@
+Proceso GestionInventario
+	
+    // Definir el tamaño máximo del arreglo para el inventario
+    Definir MaxProductos Como Entero
+    MaxProductos <- 30
+	
+    // Definir arreglos para almacenar los datos de los productos
+    Dimension Codigo[MaxProductos]
+    Dimension Nombre(MaxProductos)
+    Dimension Categoria(MaxProductos)
+    Dimension Precio(MaxProductos)
+    Dimension ExisteProducto(MaxProductos)
+	
+    // Iniciar todos los productos como no existentes
+    Para cantidad <- 1 Hasta MaxProductos Hacer
+        ExisteProducto(cantidad) <- Falso
+    Fin Para
+	
+    Definir opcion Como Entero
+    Definir indice Como Entero // Variable para rastrear el índice del producto
+	
+    Mientras opcion <> 4 Hacer
+        //Limpiar Pantalla
+		Escribir ""
+        Escribir "----- Menú de Gestión de Inventario -----"
+        Escribir "1. Agregar Producto"
+        Escribir "2. Ver Lista de Productos"
+        Escribir "3. Buscar Producto por Código"
+        Escribir "4. Salir"
+        Escribir "-------------------------------------------"
+        Leer opcion
+		
+        Segun opcion Hacer
+            1:
+                // Buscar la primera posición libre para agregar el producto
+                indice <- 1
+                Mientras indice <= MaxProductos Y ExisteProducto(indice) Hacer
+                    indice <- indice + 1
+                Fin Mientras
+				
+                Si indice <= MaxProductos Entonces
+                    Escribir "Ingrese el código del producto: "
+                    Leer Codigo(indice)
+                    Escribir "Ingrese el nombre del producto: "
+                    Leer Nombre(indice)
+                    Escribir "Ingrese la categoría del producto: "
+                    Leer Categoria(indice)
+                    Escribir "Ingrese el precio del producto: "
+                    Leer Precio(indice)
+                    ExisteProducto(indice) <- Verdadero
+                    Escribir "Producto ", indice, " agregado exitosamente."
+                Sino
+                    Escribir "No se pueden agregar más productos. El inventario está lleno."
+                Fin Si
+				
+            2:
+                //Limpiar Pantalla
+                Escribir "----- Lista de Productos -----"
+                Para cantidad <- 1 Hasta MaxProductos Hacer
+                    Si ExisteProducto(cantidad) = Verdadero Entonces
+                        Escribir "Producto ", cantidad, ":"
+						Escribir ""
+                        Escribir "Código  |  Nombre  |  Categoría  |  Precio"
+                        Escribir Codigo(cantidad), "  |  ", Nombre(cantidad), "  |  ", Categoria(cantidad), "  | $ ", Precio(cantidad)
+                    Fin Si
+                Fin Para
+				
+                // Si no hay productos en el inventario
+                //Definir inventarioVacio Como Logico
+                inventarioVacio <- Verdadero
+                Para cantidad <- 1 Hasta MaxProductos Hacer
+                    Si ExisteProducto(cantidad) = Verdadero Entonces
+                        inventarioVacio <- Falso
+						
+                    Fin Si
+                Fin Para
+                Si inventarioVacio = Verdadero Entonces
+                    Escribir "No hay productos en el inventario."
+                Fin Si
+				
+            3:
+                //Limpiar Pantalla
+                Escribir "----- Buscar Producto por Código -----"
+				Escribir "---------------------------------------"
+                Escribir "Ingrese el código del producto que desea buscar: "
+                Leer codigoBusqueda
+				
+                // Buscar el producto por código
+                Para cantidad <- 1 Hasta MaxProductos Hacer
+                    Si ExisteProducto(cantidad) = Verdadero Y Codigo(cantidad) = codigoBusqueda Entonces
+                        Escribir "Producto encontrado:"
+                        Escribir "Código  |  Nombre  |  Categoría  |  Precio"
+                        Escribir Codigo(cantidad), "  |  ", Nombre(cantidad), "  |  ", Categoria(cantidad), "  | $ ", Precio(cantidad)
+                        
+                    Fin Si
+                Fin Para
+				
+                Si cantidad > MaxProductos Entonces
+                    Escribir "Producto no encontrado."
+                Fin Si
+				
+            4:
+                Escribir "¡Hasta luego!"
+            Otro:
+                Escribir "Opción no válida."
+        Fin Segun
+    Fin Mientras
+
+FinProceso
